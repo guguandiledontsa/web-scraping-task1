@@ -36,6 +36,12 @@ test:
 	@echo "No tests defined yet. Skipping."
 	# python -m unittest discover -s src/tests -t src
 
+## Run the main application
+main:
+	@echo "Running main.py..."
+	python src/main/main.py
+	@echo "main.py executed."
+
 ## Run everything: install, lint, and format
 all: install lint format
 	@echo "All tasks completed."
