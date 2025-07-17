@@ -1,8 +1,21 @@
-"""Main entry point for the application."""
+from scraper import fetch_page
+from parser import extract_titles
+from utils import get_logger
 
-import requests
-import bs4
+logger = get_logger()
 
+def main():
+    URL = "https://books.toscrape.com"
+    logger.info(f"Starting fetch for: {URL}")
+    
+    response = fetch_page(URL)
+    if not response:
+        logger.error("Fetch failed — exiting.")
+        return
 
-print(requests.__version__)
-print(bs4.__version__)
+    titles = extract_titles(response)
+    for title in titles:
+        print(title)
+
+if __name__ == "__main__":
+    main()
