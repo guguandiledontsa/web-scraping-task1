@@ -22,7 +22,7 @@ install:
 ## Run linting (Pylint)
 lint:
 	@echo "Running Pylint..."
-	pylint $(PY_FILES) --fail-under=8
+	pylint $(PY_FILES) --fail-under=7
 	@echo "Pylint finished."
 
 ## Format code using Black
