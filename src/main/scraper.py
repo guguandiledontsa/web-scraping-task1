@@ -1,4 +1,3 @@
-"""scraper.py"""
 import requests
 from utils import get_logger
 
