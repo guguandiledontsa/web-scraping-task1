@@ -16,7 +16,7 @@ class TestExtractTitles(unittest.TestCase):
         mock_response = Mock()
         mock_response.text = html
 
-        titles = extract_titles(mock_response)
+        titles = extract_elements(mock_response, attr="h3 a")
         self.assertEqual(titles, ["Link 1", "Link 2", "No title here"])
 
 if __name__ == "__main__":
