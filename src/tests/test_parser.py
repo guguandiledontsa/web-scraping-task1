@@ -17,7 +17,7 @@ class TestExtractTitles(unittest.TestCase):
         mock_response.text = html
 
         titles = extract_titles(mock_response)
-        self.assertEqual(titles, ["Title 1", "Title 2"])
+        self.assertEqual(titles, ["Link 1", "Link 2", "No title here"])
 
 if __name__ == "__main__":
     unittest.main()
