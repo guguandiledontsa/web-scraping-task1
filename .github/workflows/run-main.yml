@@ -1,4 +1,4 @@
-name: Python Application CI
+name: run app from enrty point main.py
 
 on:
   push:
@@ -26,5 +26,5 @@ jobs:
     - name: Install dependencies
       run: make install # Runs the 'install' target from your Makefile
     
-    - name: Run scraper (smoke test)
+    - name: Run (smoke test)
       run: make main
