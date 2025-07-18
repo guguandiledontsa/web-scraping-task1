@@ -20,5 +20,4 @@ def fetch_response(url, session=None, timeout=10):
 def fetch_soup(url, session=None, timeout=10, parser="lxml"):
     """Use fetch_response to make soup from url response."""
     response = fetch_response(url, session,timeout)
-    soup = BeautifulSoup(response.text, parser)
-    return soup
+    return BeautifulSoup(response.text, parser) if (response is not None) else None
