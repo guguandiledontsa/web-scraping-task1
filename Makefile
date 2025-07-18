@@ -35,6 +35,7 @@ format:
 test:
 	@echo "No tests defined yet. Skipping."
 	# python -m unittest discover -s src/tests -t src
+	python -m unittest discover -s tests -p "test_*.py"
 
 ## Run the main application
 main:
