@@ -15,7 +15,7 @@ def main():
         logger.error("Fetch failed — exiting.")
         return
 
-    titles = extract_elements(response, "h3 a")
+    titles = extract_elements(response, "h3 a", "title")
     for title in titles:
         print(title)
 
