@@ -1,6 +1,6 @@
 """module to handle request logic."""
 import requests
-from utils import get_logger
+from .utils import get_logger
 
 logger = get_logger()
 
