@@ -1,10 +1,11 @@
-# utils.py
+"""Module to hold all utility functions."""
 import logging
 import os
 
 _logger = None
 
 def get_logger(name="books_scraper"):
+    """Singleton logger to be used across the project."""
     global _logger
     if _logger:
         return _logger
