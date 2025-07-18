@@ -17,6 +17,7 @@ install:
 	@echo "Installing Python dependencies..."
 	pip install --upgrade pip
 	pip install -r requirements.txt
+	pip install -e .
 	@echo "Dependencies installed."
 
 ## Run linting (Pylint)
@@ -40,7 +41,7 @@ test:
 ## Run the main application
 main:
 	@echo "Running main.py..."
-	python src/main/main.py
+	python -m main.main
 	@echo "main.py executed."
 
 ## Run everything: install, lint, and format
