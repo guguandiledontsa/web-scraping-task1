@@ -82,7 +82,7 @@ class TestParser(unittest.TestCase):
 
 class TestScraper(unittest.TestCase):
 
-    @patch("src.scraper.requests.Session.get")
+    @patch("main.scraper.requests.Session.get")
     def test_fetch_response_success(self, mock_get):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -95,7 +95,7 @@ class TestScraper(unittest.TestCase):
         self.assertEqual(response.text, "OK")
         mock_get.assert_called_once()
 
-    @patch("src.scraper.requests.Session.get")
+    @patch("main.scraper.requests.Session.get")
     def test_fetch_response_http_error(self, mock_get):
         mock_response = Mock()
         mock_response.raise_for_status.side_effect = Exception("404 Not Found")
@@ -104,7 +104,7 @@ class TestScraper(unittest.TestCase):
         response = fetch_response("https://example.com/notfound")
         self.assertIsNone(response)
 
-    @patch("src.scraper.requests.Session.get", side_effect=Exception("Timeout"))
+    @patch("main.scraper.requests.Session.get", side_effect=Exception("Timeout"))
     def test_fetch_response_network_error(self, mock_get):
         response = fetch_response("https://example.com")
         self.assertIsNone(response)
