@@ -25,6 +25,6 @@ jobs:
 
     - name: Install dependencies
       run: make install # Runs the 'install' target from your Makefile
-
-   - name: Run scraper (smoke test)
-      run: python scraper_v1.py # Once you create scraper_v1.py
+    
+    - name: Run scraper (smoke test)
+      run: make main
