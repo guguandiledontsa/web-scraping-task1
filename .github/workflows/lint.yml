@@ -28,7 +28,3 @@ jobs:
 
     - name: Analyse the code with pylint
       run: make lint # Runs the 'lint' target from your Makefile
-
-    # You can add more steps here later, e.g., to run your scraper script
-    # - name: Run scraper (smoke test)
-    #   run: python scraper_v1.py # Once you create scraper_v1.py
