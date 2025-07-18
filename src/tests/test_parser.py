@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from main.parser import extract_titles
+from main.parser import extract_elements
 
 class TestExtractTitles(unittest.TestCase):
     def test_extract_titles(self):
