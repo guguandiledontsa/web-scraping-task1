@@ -1,7 +1,7 @@
 """Main entry point for scraping books."""
 
 from .scraper import fetch_response
-from .parser import extract_titles
+from .parser import extract_elements
 from .utils import get_logger
 
 logger = get_logger()
