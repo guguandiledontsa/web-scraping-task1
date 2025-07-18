@@ -25,6 +25,6 @@ def select_elements(soup, selector):
 
 def extract_from_elements(elements, attr="text"):
     return [
-        el.get_text(strip=True) if attr == "text" else el.get(attr, "")
+        el.get_text(strip=True, separator=" ") if attr == "text" else el.get(attr, "")
         for el in elements
     ]
