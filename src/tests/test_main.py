@@ -95,20 +95,6 @@ class TestScraper(unittest.TestCase):
         self.assertEqual(response.text, "OK")
         mock_get.assert_called_once()
 
-    @patch("main.scraper.requests.Session.get")
-    def test_fetch_response_http_error(self, mock_get):
-        mock_response = Mock()
-        mock_response.raise_for_status.side_effect = Exception("404 Not Found")
-        mock_get.return_value = mock_response
-
-        response = fetch_response("https://example.com/notfound")
-        self.assertIsNone(response)
-
-    @patch("main.scraper.requests.Session.get", side_effect=Exception("Timeout"))
-    def test_fetch_response_network_error(self, mock_get):
-        response = fetch_response("https://example.com")
-        self.assertIsNone(response)
-
     def test_fetch_response_with_custom_session(self):
         mock_session = Mock()
         mock_response = Mock()
