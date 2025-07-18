@@ -1,0 +1,30 @@
+name: testing CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # The operating system for the virtual machine
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"] # Test with multiple Python versions
+
+    steps:
+    - uses: actions/checkout@v4 # Checks out your repository code
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5 # Sets up the specified Python version
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip' # Caches pip dependencies to speed up builds
+
+    - name: Install dependencies
+      run: make install # Runs the 'install' target from your Makefile
+
+    - name: Analyse the code with pylint
+      run: make test # Runs the 'lint' target from your Makefile
