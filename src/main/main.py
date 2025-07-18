@@ -18,6 +18,8 @@ def main():
     titles = extract_elements(response, "h3 a", "title")
     for title in titles:
         print(title)
+    next_link = extract_elements(response, "div .next a", "href")
+    print(next_link)
 
 if __name__ == "__main__":
     main()
