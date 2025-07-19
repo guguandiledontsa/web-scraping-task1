@@ -48,10 +48,8 @@ class TestParser(unittest.TestCase):
                 self.assertEqual(result, expected)
 
     def test_extract_elements_empty_html(self):
-        class Response:
-            text = ""
-
-        self.assertEqual(extract_elements(Response(), "a", "text"), [])
+        soup = BeautifulSoup("", "lxml")
+        self.assertEqual(extract_elements(soup, "a", "text"), [])
 
     def test_extract_from_elements_nested_tags(self):
         html = "<div><a href='link'><span>Nested <b>Text</b></span></a></div>"
