@@ -24,7 +24,21 @@ def select_elements(soup, selector):
     return soup.select(selector)
 
 def extract_from_elements(elements, attr="text"):
-    return [
-        el.get_text(strip=True, separator=" ") if attr == "text" else el.get(attr, "")
-        for el in elements
-    ]
+    extracted = []
+
+    for el in elements:
+        match attr:
+            case "text":
+                extracted.append(el.get_text(strip=True, separator=" "))
+            case "html":
+                extracted.append(str(el))  # full HTML of the tag
+            case "inner_html":
+                extracted.append("".join(str(c) for c in el.contents))
+            case "href" | "src" | "title":
+                extracted.append(el.get(attr, ""))
+            case _:
+                # fallback for any other attribute
+                extracted.append(el.get(attr, ""))
+    
+    return extracted
+
