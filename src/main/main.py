@@ -12,7 +12,7 @@ def main():
     logger.info(f"Starting fetch for: {url}")
     soup = fetch_soup(url)
     if not soup:
-        logger.error("Fetch failed — exiting.")
+        logger.error("Fetch failed - exiting.")
         return
 
     titles = extract_elements(soup, "h3 a", "title")
