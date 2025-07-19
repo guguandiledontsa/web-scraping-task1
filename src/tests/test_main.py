@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup
 
 from main.scraper import fetch_response
 from main.parser import (
-    parse_html,
-    select_elements,
     extract_from_elements,
     extract_elements
 )
@@ -14,24 +12,13 @@ from main.parser import (
 class TestParser(unittest.TestCase):
     def setUp(self):
         self.simple_html = "<div><a href='link1'>Link 1</a><a>Link 2</a><p>No link here</p></div>"
-        self.soup = parse_html(self.simple_html)
+        self.soup = BeautifulSoup(self.simple_html)
 
     def test_parse_html(self):
         self.assertIsInstance(self.soup, BeautifulSoup)
 
-    def test_select_elements(self):
-        cases = [
-            ("a", 2),
-            ("nonexistent", 0),
-            ("p", 1)
-        ]
-        for selector, expected_count in cases:
-            with self.subTest(selector=selector):
-                elements = select_elements(self.soup, selector)
-                self.assertEqual(len(elements), expected_count)
-
     def test_extract_from_elements_text_and_attr(self):
-        anchors = select_elements(self.soup, "a")
+        anchors = self.soup.select("a")
 
         test_cases = [
             ("text", ["Link 1", "Link 2"]),
@@ -46,7 +33,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(extract_from_elements([], attr="text"), [])
     
     def test_extract_elements_end_to_end(self):
-        html = self.simple_html  # self.simple_html is still valid from setUp()
+        html = self.simple_html
         
         soup = BeautifulSoup(html, "lxml")
         
@@ -68,15 +55,15 @@ class TestParser(unittest.TestCase):
 
     def test_extract_from_elements_nested_tags(self):
         html = "<div><a href='link'><span>Nested <b>Text</b></span></a></div>"
-        soup = parse_html(html)
-        elements = select_elements(soup, "a")
+        soup = BeautifulSoup(html)
+        elements = soup.select("a")
         texts = extract_from_elements(elements, attr="text")
         self.assertEqual(texts, ["Nested Text"])
 
     def test_extract_from_elements_missing_attr(self):
         html = "<a>Missing href</a>"
-        soup = parse_html(html)
-        elements = select_elements(soup, "a")
+        soup = BeautifulSoup(html)
+        elements = soup.select("a")
         hrefs = extract_from_elements(elements, attr="href")
         self.assertEqual(hrefs, [""])
 
