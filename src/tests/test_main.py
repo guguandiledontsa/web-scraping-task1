@@ -44,11 +44,12 @@ class TestParser(unittest.TestCase):
 
     def test_extract_from_elements_empty_list(self):
         self.assertEqual(extract_from_elements([], attr="text"), [])
-
+    
     def test_extract_elements_end_to_end(self):
-        class Response:
-            text = self.simple_html
-
+        html = self.simple_html  # self.simple_html is still valid from setUp()
+        
+        soup = BeautifulSoup(html, "lxml")
+        
         test_cases = [
             ("a", "text", ["Link 1", "Link 2"]),
             ("a", "href", ["link1", ""]),
@@ -56,7 +57,7 @@ class TestParser(unittest.TestCase):
         ]
         for selector, attr, expected in test_cases:
             with self.subTest(selector=selector, attr=attr):
-                result = extract_elements(Response(), selector, attr)
+                result = extract_elements(soup, selector, attr)
                 self.assertEqual(result, expected)
 
     def test_extract_elements_empty_html(self):
