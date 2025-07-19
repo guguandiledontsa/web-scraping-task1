@@ -6,7 +6,7 @@ from .utils import get_logger
 logger = get_logger()
 
 def fetch_response(url, session=None, timeout=10):
-    """Returns the reposne from a request to URL."""
+    """Returns response from a request to URL."""
     session = session or requests.Session()
     try:
         response = session.get(url, timeout=timeout)
