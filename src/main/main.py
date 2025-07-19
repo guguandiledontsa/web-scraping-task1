@@ -11,7 +11,8 @@ def main():
     url = "https://books.toscrape.com"
     logger.info(f"Starting fetch for: {url}")
     response = fetch_response(url)
-    if not response:
+    soup = fetch_soup(url)
+    if not response or not soup:
         logger.error("Fetch failed — exiting.")
         return
 
