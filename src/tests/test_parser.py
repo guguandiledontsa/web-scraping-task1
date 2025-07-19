@@ -1,4 +1,5 @@
 import unittest
+from bs4 import BeautifulSoup
 from unittest.mock import Mock
 from main.parser import extract_elements
 
