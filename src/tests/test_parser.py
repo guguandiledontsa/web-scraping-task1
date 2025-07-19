@@ -13,10 +13,8 @@ class TestExtractTitles(unittest.TestCase):
           </body>
         </html>
         '''
-        mock_response = Mock()
-        mock_response.text = html
-
-        titles = extract_elements(mock_response, "h3 a")
+        soup = BeautifulSoup(html, "lxml")
+        titles = extract_elements(soup, "h3 a", "text")
         self.assertEqual(titles, ["Link 1", "Link 2", "No title here"])
 
 if __name__ == "__main__":
