@@ -1,6 +1,6 @@
 """Main entry point for scraping books."""
 
-from .scraper import fetch_response
+from .scraper import fetch_response, fetch_soup
 from .parser import extract_elements
 from .utils import get_logger
 
