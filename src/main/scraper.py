@@ -1,4 +1,4 @@
-"""module to handle request logic."""
+"""Module to scrape paginated book data."""
 import requests
 from bs4 import BeautifulSoup
 from .utils import get_logger
@@ -6,8 +6,11 @@ from .parser import extract_elements
 
 logger = get_logger()
 
+BASE_URL = "http://books.toscrape.com/catalogue/page-1.html"
+
+
 def fetch_response(url, session=None, timeout=10):
-    """Returns response from a request to URL."""
+    """Fetch raw HTML response from a URL."""
     session = session or requests.Session()
     try:
         response = session.get(url, timeout=timeout)
@@ -18,41 +21,71 @@ def fetch_response(url, session=None, timeout=10):
         logger.error(f"Failed to fetch {url}: {e}")
         return None
 
+
 def fetch_soup(url, session=None, timeout=10, parser="lxml"):
-    """Use fetch_response to make soup from url response."""
-    response = fetch_response(url, session,timeout)
-    return BeautifulSoup(response.text, parser) if (response is not None) else None
+    """Convert URL response into BeautifulSoup object."""
+    response = fetch_response(url, session, timeout)
+    return BeautifulSoup(response.text, parser) if response else None
 
 
-def get_next_link(url, selector="div .next a", attr="href"):
-    return extract_elements(fetch_soup(url), selector, attr)
-    
+def get_next_link(soup, selector="div .next a", attr="href"):
+    """Get the 'next page' link if available."""
+    links = extract_elements(soup, selector, attr)
+    return links[0] if links else None
 
-BASE_URL = "http://books.toscrape.com/catalogue/page-1.html"
+
+def extract_book_data(book):
+    """Extract title, price, and rating from a single book tag."""
+    title = (
+        book
+        .select_one("h3 a")['title']
+        if book.select_one("h3 a") and book.select_one("h3 a").has_attr("title")
+        else None
+    )
+
+    price = (
+        book
+        .select_one(".price_color")
+        .text.strip()
+        if book.select_one(".price_color")
+        else None
+    )
+
+    rating = (
+        book
+        .select_one("p.star-rating")['class'][1]
+        if book.select_one("p.star-rating") and len(book.select_one("p.star-rating")['class']) > 1
+        else None
+    )
+
+    return {
+        "title": title,
+        "price": price,
+        "rating": rating
+    }
+
 
 def scrape_paginated_books(start_url):
+    """Scrape all books across paginated catalog pages."""
     url = start_url
     all_books = []
 
     while url:
         soup = fetch_soup(url)
         if not soup:
+            logger.warning(f"Skipping page due to failed fetch: {url}")
             break
 
-        books = extract_elements(soup, 'article.product_pod')
-        for book in books:
-            title = book.h3.a['title']
-            price = book.select_one('.price_color').text if book.select_one('.price_color') else None
-            rating = book.p['class'][1] 
-            all_books.append({
-                "title": title,
-                "price": price,
-                "rating": rating,
-                "page": url
-            })
+        books = extract_elements(soup, "article.product_pod", attr=None)
+        logger.info(f"Found {len(books)} books on {url}")
 
-        next_link = get_next_link(url)
-        url = f"http://books.toscrape.com/catalogue/{next_link[0]}" if next_link else None
+        for book in books:
+            book_data = extract_book_data(book)
+            book_data["page"] = url
+            all_books.append(book_data)
+
+        next_relative = get_next_link(soup)
+        url = f"http://books.toscrape.com/catalogue/{next_relative}" if next_relative else None
 
     return all_books
 
@@ -60,7 +93,7 @@ def scrape_paginated_books(start_url):
 if __name__ == "__main__":
     logger.info("starting scraper")
     books = scrape_paginated_books(BASE_URL)
-    logger.info(f"got {len(books)} books from {BASE_URL}")
-    
+    logger.info(f"Scraped {len(books)} books")
+
     for book in books:
         print(book)
