@@ -76,7 +76,7 @@ def scrape_paginated_books(start_url):
             logger.warning(f"Skipping page due to failed fetch: {url}")
             break
 
-        books = extract_elements(soup, "article.product_pod", attr=None)
+        books = extract_elements(soup, "article.product_pod")
         logger.info(f"Found {len(books)} books on {url}")
 
         for book in books:
