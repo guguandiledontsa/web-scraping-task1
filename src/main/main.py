@@ -15,11 +15,9 @@ def main():
         logger.error("Fetch failed - exiting.")
         return
 
-    titles = extract_elements(soup, "h3 a", "title")
-    for title in titles:
-        print(title)
     next_link = extract_elements(soup, "div .next a", "href")
     print(next_link)
+
 
 if __name__ == "__main__":
     main()
