@@ -43,6 +43,9 @@ main:
 	@echo "Running main.py..."
 	python -m main.main
 	@echo "main.py executed."
+	@echo "Running scrapper.py..."
+	python -m main.scraper
+	@echo "scraper.py done."
 
 ## Run everything: install, lint, and format
 all: install lint format
