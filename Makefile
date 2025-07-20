@@ -40,9 +40,6 @@ test:
 
 ## Run the main application
 main:
-	@echo "Running main.py..."
-	python -m main.main
-	@echo "main.py executed."
 	@echo "Running scrapper.py..."
 	python -m main.scraper
 	@echo "scraper.py done."
