@@ -41,7 +41,7 @@ test:
 ## Run the main application
 main:
 	@echo "Running scrapper.py..."
-	python -m main.scraper
+	# python -m main.scraper
 	@echo "scraper.py done."
 
 ## Run everything: install, lint, and format
