@@ -42,7 +42,7 @@ test:
 main:
 	@echo "Running scrapper.py..."
 	# python -m main.scraper
-	jupyter nbconvert --to notebook --execute scraping.ipynb
+	python -m jupyter nbconvert --to notebook --execute src/main/scraping.ipynb
 	@echo "scraper.py done."
 
 ## Run everything: install, lint, and format
