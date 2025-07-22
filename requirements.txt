@@ -4,4 +4,4 @@ beautifulsoup4
 pandas
 pylint
 black
-jupyter
+notebook
