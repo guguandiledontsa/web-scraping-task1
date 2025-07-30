@@ -8,6 +8,20 @@ version = "0.1.0"
 description = "A simple web scraping project"
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = [
+  "requests",
+  "lxml",
+  "beautifulsoup4",
+  "pandas",
+  "notebook",
+  "ipykernel",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pylint",
+  "black"
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
