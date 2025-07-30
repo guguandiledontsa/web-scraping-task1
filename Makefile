@@ -1,50 +1,31 @@
-.PHONY: install lint test format all
+.PHONY: install lint test format all main
 
-# ---------------------------------------------------------------------
-# Variables
-# ---------------------------------------------------------------------
-
-# Find all Python files in the current directory and subdirectories
-# Using 'git ls-files' is reliable if Git is installed.
 PY_FILES := $(shell git ls-files '*.py')
 
-# ---------------------------------------------------------------------
-# Targets
-# ---------------------------------------------------------------------
-
-## Install all required tools
 install:
-	@echo "Installing Python dependencies..."
+	@echo "Installing dependencies..."
 	pip install --upgrade pip
-	pip install -r requirements.txt
-	pip install -e .
-	@echo "Dependencies installed."
+	pip install -e .[dev]
+	@echo "Installation complete."
 
-## Run linting (Pylint)
 lint:
-	@echo "Running Pylint..."
-	pylint $(PY_FILES) --fail-under=6
-	@echo "Pylint finished."
+	@echo "Linting with Pylint..."
+	pylint $(PY_FILES)
+	@echo "Lint complete."
 
-## Format code using Black
 format:
-	@echo "Formatting code with Black..."
+	@echo "Formatting with Black..."
 	black $(PY_FILES)
-	@echo "Black formatting finished."
+	@echo "Format complete."
 
-## Run unit tests (Placeholder for future tests)
 test:
-	@echo "No tests defined yet. Skipping."
-	# python -m unittest discover -s src/tests -t src
+	@echo "Running unit tests..."
 	python -m unittest discover -s tests -p "test_*.py"
 
-## Run the main application
 main:
-	@echo "Running scrapper.py..."
-	# python -m main.scraper
+	@echo "Running scraping notebook..."
 	jupyter nbconvert --to script src/main/scraping.ipynb --stdout | python
-	@echo "scraper.py done."
+	@echo "Notebook execution finished."
 
-## Run everything: install, lint, and format
 all: install lint format
-	@echo "All tasks completed."
+	@echo "All steps complete."
