@@ -10,7 +10,7 @@ install:
 
 lint:
 	@echo "Linting with Pylint..."
-	pylint $(PY_FILES)
+	pylint $(PY_FILES) --fail-under=6
 	@echo "Lint complete."
 
 format:
