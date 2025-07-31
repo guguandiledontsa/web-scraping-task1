@@ -1,7 +1,0 @@
-requests
-lxml
-beautifulsoup4
-pandas
-pylint
-black
-notebook
