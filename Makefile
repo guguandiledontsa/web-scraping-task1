@@ -24,7 +24,7 @@ test:
 
 main:
 	@echo "Running scraping notebook..."
-	jupyter nbconvert --to script src/main/scraping.ipynb --stdout | python
+	papermill src/main/scraping.ipynb /dev/null
 	@echo "Notebook execution finished."
 
 all: install lint format
