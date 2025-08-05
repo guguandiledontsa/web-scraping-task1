@@ -26,6 +26,8 @@ main:
 	@echo "Running scraping notebook..."
 	papermill src/main/scraping.ipynb /dev/null
 	@echo "Notebook execution finished."
+	@echo "=== Scraping Log Output ==="
+	@cat logs/scraping.log || echo "Log file not found."
 
 all: install lint format
 	@echo "All steps complete."
