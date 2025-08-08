@@ -1,6 +1,8 @@
 """Module to scrape paginated book data."""
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
 from .utils import get_logger
 from .parser import extract_elements
 
