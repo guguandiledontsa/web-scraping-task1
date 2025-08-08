@@ -20,6 +20,15 @@ def fetch_response(url, session=requests.Session()):
     except Exception as e:
         logger.warning(f"Unhandled exception:\n{type(e).__name__}: {e}")
 
+def make_soup(response=None, url=None):
+    if isinstance(url, str):
+        response = fetch_response(url)
+    if not (response and response.status_code == 200):
+        logger.warning(f"Couldn't make soup with: {response}")
+        return None
+    soup = BeautifulSoup(response.text, "lxml")
+    logger.info("Soup's ready!")
+    return soup
 
 if __name__ == "__main__":
     ...
