@@ -13,7 +13,7 @@ class TestFetchResponse(unittest.TestCase):
 
         response = fetch_response("http://example.com", session=mock_session)
         self.assertEqual(response, mock_response)
-        mock_session.get.assert_called_once_with("http://example.com", headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
+        mock_session.get.assert_called_once_with("http://example.com", headers={'User-Agent': 'Mozilla/5.0', 'Accept-Charset': 'utf-8'}, timeout=10)
 
     def test_fetch_response_failure(self):
         mock_session = Mock()
