@@ -30,6 +30,7 @@ def fetch_response(url, session=None, timeout=10):
 
     headers = {
         "User-Agent": "Mozilla/5.0",
+        'Accept-Charset': 'utf-8',
     }
     try:
         response = session.get(url, headers=headers, timeout=timeout)
@@ -50,6 +51,8 @@ def make_soup(response=None, url=None):
     if not (response and response.status_code == 200):
         logger.warning(f"Couldn't make soup with: {response}")
         return None
+    
+    response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, "lxml")
     logger.info("Soup's ready!")
     return soup
