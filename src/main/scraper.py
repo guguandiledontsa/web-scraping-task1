@@ -2,6 +2,8 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from .utils import get_logger
 from .parser import extract_elements
@@ -32,7 +34,7 @@ def fetch_response(url, session=None, timeout=10):
     try:
         response = session.get(url, headers=headers, timeout=timeout)
         response.raise_for_status()
-        logger.info(f"fetched: {url} [{response.status_code}
+        logger.info(f"fetched: {url} [{response.status_code}]")
         return response
     except requests.exceptions.HTTPError as errh:
         logger.warning(f"HTTP error occurred:\n{errh}")
