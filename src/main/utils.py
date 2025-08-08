@@ -1,5 +1,8 @@
 """Module to hold all utility functions."""
 
+import os
+import logging
+
 _logger = None
 
 def get_logger(name="books_scraper"):
