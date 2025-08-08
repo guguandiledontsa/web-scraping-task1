@@ -8,12 +8,31 @@ from .parser import extract_elements
 
 logger = get_logger()
 
+def fetch_response(url, session=None, timeout=10):
+    if not isinstance(url, str) or not url.startswith("http"):
+        logger.warning(f"Invalid URL: {url}")
+        return None
+    session = session or requests.Session()
 
-def fetch_response(url, session=requests.Session()):
+    if not hasattr(session, "_retry_configured"):  # One-time setup
+        retry_strategy = Retry(
+            total=3,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["GET", "HEAD"],
+            backoff_factor=1,
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        session._retry_configured = True  # Don't mount again
+
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+    }
     try:
-        response = session.get(url, timeout=10)
+        response = session.get(url, headers=headers, timeout=timeout)
         response.raise_for_status()
-        logger.info(f"fetched: {url}")
+        logger.info(f"fetched: {url} [{response.status_code}
         return response
     except requests.exceptions.HTTPError as errh:
         logger.warning(f"HTTP error occurred:\n{errh}")
@@ -21,6 +40,7 @@ def fetch_response(url, session=requests.Session()):
         logger.warning(f"{type(err).__name__}\n{err}")
     except Exception as e:
         logger.warning(f"Unhandled exception:\n{type(e).__name__}: {e}")
+
 
 def make_soup(response=None, url=None):
     if isinstance(url, str):
@@ -80,14 +100,14 @@ def pager(base, max_pages, block_selector, element_selector, fetcher, callback, 
 
     pages = {}
     counter = 1
-    while (counter <= max_pages) and (fetched_page := fetcher(url=base)):
-        page_soup = fetched_page
+    while (counter <= max_pages) and (page_soup := fetcher(url=base)):
         link = extract_blocks(page_soup, block_selector, {element_selector: (element_selector, "href")})[block_index].get(element_selector)[item_index]
         next_url = urljoin(base, link)
         pages[next_url] = (page_soup, callback(page_soup) if callback else None)
     
         base = next_url
         counter += 1
+        
     return pages
 
 if __name__ == "__main__":
