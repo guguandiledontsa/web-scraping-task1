@@ -6,7 +6,6 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from .utils import get_logger
-from .parser import extract_elements
 
 logger = get_logger()
 
