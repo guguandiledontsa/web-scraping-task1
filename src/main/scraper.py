@@ -16,7 +16,7 @@ def fetch_response(url, session=None, timeout=10):
         return None
     session = session or requests.Session()
 
-    if not hasattr(session, "_retry_configured"):  # One-time setup
+    if not hasattr(session, "_retry_configured"):
         retry_strategy = Retry(
             total=3,
             status_forcelist=[429, 500, 502, 503, 504],
@@ -26,7 +26,7 @@ def fetch_response(url, session=None, timeout=10):
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("http://", adapter)
         session.mount("https://", adapter)
-        session._retry_configured = True  # Don't mount again
+        session._retry_configured = True
 
     headers = {
         "User-Agent": "Mozilla/5.0",
@@ -75,9 +75,8 @@ def extract_blocks(soup, block_selector, fields):
     for block in blocks:
         block_data = {}
         for field_name, (selector, attr) in fields.items():
-            elements = block.select(selector)
-
             values = []
+            elements = block.select(selector)
             for el in elements:
                 match attr:
                     case "text":
@@ -88,13 +87,21 @@ def extract_blocks(soup, block_selector, fields):
                         values.append("".join(str(c) for c in el.contents))
                     case _:
                         values.append(el.get(attr, ""))
+
+                if not value:
+                    logger.info(f"for element ({el}) of attribute ({attr}) appended value ({value})")
             
-            block_data[field_name] = values if values else None
+            field_default = None
+            block_data[field_name] = values if values else field_default
+            if not values:
+                logger.warning(f"field_name ({field_name}) found no data with selector ({selector}) and attribute ({attr}), used default ({field_default})")
+
         extracted_data.append(block_data)
 
     logger.info(f"Extracted {len(extracted_data)} blocks using '{block_selector}'")
     return extracted_data
-    
+
+
 def pager(base, max_pages, block_selector, element_selector, fetcher, callback, block_index=0, item_index=0):
     """
     Iterate through paginated links starting from `base`.
