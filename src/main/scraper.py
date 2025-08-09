@@ -80,13 +80,17 @@ def extract_blocks(soup, block_selector, fields):
             for el in elements:
                 match attr:
                     case "text":
-                        values.append(el.get_text(strip=True, separator=" "))
+                        value = el.get_text(strip=True, separator=" ")
+                        values.append(value)
                     case "html":
-                        values.append(str(el))
+                        value = str(el)
+                        values.append(value)
                     case "inner_html":
-                        values.append("".join(str(c) for c in el.contents))
+                        value = "".join(str(c) for c in el.contents)
+                        values.append(value)
                     case _:
-                        values.append(el.get(attr, ""))
+                        value = el.get(attr, "")
+                        values.append(value)
 
                 if not value:
                     logger.info(f"for element ({el}) of attribute ({attr}) appended value ({value})")
@@ -100,7 +104,6 @@ def extract_blocks(soup, block_selector, fields):
 
     logger.info(f"Extracted {len(extracted_data)} blocks using '{block_selector}'")
     return extracted_data
-
 
 def pager(base, max_pages, block_selector, element_selector, fetcher, callback, block_index=0, item_index=0):
     """
