@@ -2,11 +2,8 @@
 
 import os
 import logging
-import requests
 
 __ = lambda _: [i for i in dir(_) if not i.startswith("_")]
-
-
 _logger = None
 
 def get_logger(name="books_scraper"):
