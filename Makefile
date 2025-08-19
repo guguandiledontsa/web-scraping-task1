@@ -31,7 +31,7 @@ preview_csvs:
 	@for file in src/main/data/*.csv; do \
 		if [ -f "$$file" ]; then \
 			echo "---- $$file ----"; \
-			head -n 3 "$$file"; \
+			head -n 1 "$$file"; \
 		else \
 			echo "No CSV files found in $(DATA_DIR)"; \
 		fi \
