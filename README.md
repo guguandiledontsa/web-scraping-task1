@@ -73,7 +73,7 @@ This repository demonstrates robust, ethical, and modular web scraping for extra
 ## 🔧 Quick Start
 
 ```sh
-git clone <repo_url>
+git clone https://github.com/guguandiledontsa/web-scraping-task1
 cd web-scraping-task1
 make install
 make main
